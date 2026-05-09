@@ -1,0 +1,31 @@
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number[]}
+     */
+    topKFrequent(nums, k) {
+        let lookup = {}
+
+        for (let i = 0; i < nums.length; i++){
+            lookup[nums[i]] = (lookup[nums[i]] || 0) + 1
+        }
+
+        let bucket = Array.from({length:nums.length + 1}, () => [])
+
+        for (const [number, count] of Object.entries(lookup)){
+            bucket[count] = [...bucket[count], Number(number)]
+        }
+
+        let res = []
+
+        for (let i = bucket.length - 1; i >= 0 && res.length < k; i--){
+            if(bucket[i].length === 0){
+                continue
+            }
+            res.push(...bucket[i])
+        }
+
+        return res
+    }
+}
